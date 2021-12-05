@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  musicashram:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    volumes:
+      - ./src:/usr/src/app/src
+      - ./nodemon.json:/usr/src/app/nodemon.json
+    container_name: musicashram
+    expose:
+      - '3005'
+    ports:
+      - '3005:3005'
+    command: yarn run dev
