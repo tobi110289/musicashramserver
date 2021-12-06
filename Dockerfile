@@ -12,4 +12,4 @@ ENV NODE_PATH=./build
 
 RUN yarn run build
 
-
+CMD ["/usr/src/app/build/index.js","node"]

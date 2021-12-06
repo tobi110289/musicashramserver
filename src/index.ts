@@ -1,3 +1,4 @@
+console.log('TRYING TO START THE NODE SERVER');
 import express from "express";
 import router from "./router";
 import helmet from "helmet";
