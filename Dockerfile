@@ -7,7 +7,6 @@ RUN yarn
 
 COPY . .
 
-
 ENV NODE_PATH=./build
 
 RUN yarn run build
