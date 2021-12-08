@@ -2,7 +2,9 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  output        = "../../generated/client"
+  binaryTargets = "debian-openssl-1.1.x"
 }
 
 datasource db {
@@ -16,4 +18,11 @@ model User {
   firstName String
   lastName  String
   tokens    Int
+}
+
+model Treasury {
+  id Int @id @default(autoincrement())
+  amount Float
+  distributionDate String
+  current Boolean
 }
