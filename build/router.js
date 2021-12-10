@@ -11,6 +11,7 @@ router.get("/users", user_controller_1.getAll);
 router.get("/user/:id", user_controller_1.getUserById);
 router.put("/user/:id", user_controller_1.updateUserById);
 router.put("/usertoken/:id", user_controller_1.updateTokenByUserId);
+router.put("/usertokens", user_controller_1.deleteAllTokens);
 router.delete("/user/:id", user_controller_1.deleteUserById);
 router.delete("/users", user_controller_1.deleteAll);
 router.post("/user", user_controller_1.create);

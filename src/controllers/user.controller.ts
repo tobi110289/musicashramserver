@@ -31,8 +31,11 @@ async function updateUserById(req: Request, res: Response): Promise<void> {
       where: { id: +req.params.id },
       data: req.body,
     });
+    const updatedUser = await prisma.user.findUnique({
+      where: { id: +req.params.id },
+    });
     res.status(200);
-    res.send(user);
+    res.send(updatedUser);
   } catch (error) {
     console.log("Error: ", error);
     res.sendStatus(500);
@@ -49,8 +52,11 @@ async function updateTokenByUserId(req: Request, res: Response): Promise<void> {
         },
       },
     });
+    const updatedUser = await prisma.user.findUnique({
+      where: { id: +req.params.id },
+    });
     res.status(200);
-    res.send(user);
+    res.send(updatedUser);
   } catch (error) {
     console.log("Error: ", error);
     res.sendStatus(500);
@@ -71,7 +77,12 @@ async function deleteUserById(req: Request, res: Response): Promise<void> {
 
 async function create(req: Request, res: Response) {
   try {
-    const newUser = await prisma.user.create({ data: req.body });
+    const newUser = await prisma.user.create({
+      data: {
+        ...req.body,
+        tokens: 0,
+      },
+    });
     res.status(201);
     res.send(newUser);
   } catch (error) {
@@ -91,6 +102,22 @@ async function deleteAll(req: Request, res: Response) {
   }
 }
 
+async function deleteAllTokens(req: Request, res: Response) {
+  try {
+    await prisma.user.updateMany({
+      data: {
+        tokens: 0,
+      },
+    });
+    const updatedUsers = await prisma.user.findMany();
+    res.status(200);
+    res.send(updatedUsers);
+  } catch (error) {
+    console.log("Error: ", error);
+    res.sendStatus(500);
+  }
+}
+
 export {
   getAll,
   create,
@@ -99,4 +126,5 @@ export {
   updateUserById,
   updateTokenByUserId,
   deleteAll,
+  deleteAllTokens,
 };

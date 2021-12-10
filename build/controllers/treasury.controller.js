@@ -27,7 +27,11 @@ async function updateCurrent(req, res) {
                 },
             },
         });
-        res.sendStatus(204);
+        const treasuryData = await prisma_1.default.treasury.findMany({
+            where: { current: true },
+        });
+        res.status(200);
+        res.send(treasuryData);
     }
     catch (error) {
         console.log("Error: ", error);

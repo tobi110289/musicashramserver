@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAll = exports.updateTokenByUserId = exports.updateUserById = exports.deleteUserById = exports.getUserById = exports.create = exports.getAll = void 0;
+exports.deleteAllTokens = exports.deleteAll = exports.updateTokenByUserId = exports.updateUserById = exports.deleteUserById = exports.getUserById = exports.create = exports.getAll = void 0;
 const prisma_1 = __importDefault(require("../prisma"));
 async function getAll(req, res) {
     try {
@@ -37,8 +37,11 @@ async function updateUserById(req, res) {
             where: { id: +req.params.id },
             data: req.body,
         });
+        const updatedUser = await prisma_1.default.user.findUnique({
+            where: { id: +req.params.id },
+        });
         res.status(200);
-        res.send(user);
+        res.send(updatedUser);
     }
     catch (error) {
         console.log("Error: ", error);
@@ -56,8 +59,11 @@ async function updateTokenByUserId(req, res) {
                 },
             },
         });
+        const updatedUser = await prisma_1.default.user.findUnique({
+            where: { id: +req.params.id },
+        });
         res.status(200);
-        res.send(user);
+        res.send(updatedUser);
     }
     catch (error) {
         console.log("Error: ", error);
@@ -80,7 +86,12 @@ async function deleteUserById(req, res) {
 exports.deleteUserById = deleteUserById;
 async function create(req, res) {
     try {
-        const newUser = await prisma_1.default.user.create({ data: req.body });
+        const newUser = await prisma_1.default.user.create({
+            data: {
+                ...req.body,
+                tokens: 0,
+            },
+        });
         res.status(201);
         res.send(newUser);
     }
@@ -102,3 +113,20 @@ async function deleteAll(req, res) {
     }
 }
 exports.deleteAll = deleteAll;
+async function deleteAllTokens(req, res) {
+    try {
+        await prisma_1.default.user.updateMany({
+            data: {
+                tokens: 0,
+            },
+        });
+        const updatedUsers = await prisma_1.default.user.findMany();
+        res.status(200);
+        res.send(updatedUsers);
+    }
+    catch (error) {
+        console.log("Error: ", error);
+        res.sendStatus(500);
+    }
+}
+exports.deleteAllTokens = deleteAllTokens;

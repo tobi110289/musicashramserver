@@ -7,6 +7,7 @@ import {
   updateUserById,
   updateTokenByUserId,
   deleteAll,
+  deleteAllTokens,
 } from "./controllers/user.controller";
 import {
   getTreasuries,
@@ -20,6 +21,7 @@ router.get("/users", getAll);
 router.get("/user/:id", getUserById);
 router.put("/user/:id", updateUserById);
 router.put("/usertoken/:id", updateTokenByUserId);
+router.put("/usertokens", deleteAllTokens);
 router.delete("/user/:id", deleteUserById);
 router.delete("/users", deleteAll);
 router.post("/user", create);

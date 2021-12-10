@@ -22,7 +22,11 @@ async function updateCurrent(req: Request, res: Response): Promise<void> {
         },
       },
     });
-    res.sendStatus(204);
+    const treasuryData = await prisma.treasury.findMany({
+      where: { current: true },
+    });
+    res.status(200);
+    res.send(treasuryData);
   } catch (error) {
     console.log("Error: ", error);
     res.sendStatus(500);
@@ -61,9 +65,4 @@ async function deleteAllTreasuries(req: Request, res: Response) {
   }
 }
 
-export {
-  getTreasuries,
-  createTreasury,
-  updateCurrent,
-  deleteAllTreasuries,
-};
+export { getTreasuries, createTreasury, updateCurrent, deleteAllTreasuries };
