@@ -1,4 +1,5 @@
 import express from "express";
+import authMiddleware from "./middleswares/authmiddleware";
 import {
   getAll,
   create,
@@ -15,6 +16,7 @@ import {
   updateCurrent,
   deleteAllTreasuries,
 } from "./controllers/treasury.controller";
+import { createAdmin, loginAdmin } from "./controllers/admin.controller";
 const router = express.Router();
 
 router.get("/users", getAll);
@@ -29,7 +31,10 @@ router.post("/user", create);
 router.get("/treasury", getTreasuries);
 router.post("/treasury", createTreasury);
 router.put("/treasury", updateCurrent);
-router.delete("/treasury", deleteAllTreasuries);
+router.delete("/treasury", authMiddleware, deleteAllTreasuries);
+
+router.post("/admincreate", createAdmin);
+router.post("/adminlogin", loginAdmin);
 
 router.get("*", (req, res) => {
   res.status(404);

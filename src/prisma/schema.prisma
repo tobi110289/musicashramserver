@@ -21,8 +21,14 @@ model User {
 }
 
 model Treasury {
-  id Int @id @default(autoincrement())
-  amount Float
+  id               Int     @id @default(autoincrement())
+  amount           Float
   distributionDate String
-  current Boolean
+  current          Boolean
+}
+
+model Admin {
+  id       String @id @default(cuid())
+  username String @unique
+  password String
 }

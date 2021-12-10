@@ -4,8 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const authmiddleware_1 = __importDefault(require("./middleswares/authmiddleware"));
 const user_controller_1 = require("./controllers/user.controller");
 const treasury_controller_1 = require("./controllers/treasury.controller");
+const admin_controller_1 = require("./controllers/admin.controller");
 const router = express_1.default.Router();
 router.get("/users", user_controller_1.getAll);
 router.get("/user/:id", user_controller_1.getUserById);
@@ -18,7 +20,9 @@ router.post("/user", user_controller_1.create);
 router.get("/treasury", treasury_controller_1.getTreasuries);
 router.post("/treasury", treasury_controller_1.createTreasury);
 router.put("/treasury", treasury_controller_1.updateCurrent);
-router.delete("/treasury", treasury_controller_1.deleteAllTreasuries);
+router.delete("/treasury", authmiddleware_1.default, treasury_controller_1.deleteAllTreasuries);
+router.post("/admincreate", admin_controller_1.createAdmin);
+router.post("/adminlogin", admin_controller_1.loginAdmin);
 router.get("*", (req, res) => {
     res.status(404);
     res.send("Not found, sorry.");
