@@ -16,23 +16,24 @@ import {
   updateCurrent,
   deleteAllTreasuries,
 } from "./controllers/treasury.controller";
-import { createAdmin, loginAdmin } from "./controllers/admin.controller";
+import { createAdmin, loginAdmin, getAdmin } from "./controllers/admin.controller";
 const router = express.Router();
 
 router.get("/users", getAll);
 router.get("/user/:id", getUserById);
-router.put("/user/:id", updateUserById);
-router.put("/usertoken/:id", updateTokenByUserId);
-router.put("/usertokens", deleteAllTokens);
-router.delete("/user/:id", deleteUserById);
-router.delete("/users", deleteAll);
-router.post("/user", create);
+router.put("/user/:id", authMiddleware, updateUserById);
+router.put("/usertoken/:id", authMiddleware, updateTokenByUserId);
+router.put("/usertokens", authMiddleware, deleteAllTokens);
+router.delete("/user/:id", authMiddleware, deleteUserById);
+router.delete("/users", authMiddleware, deleteAll);
+router.post("/user", authMiddleware, create);
 
 router.get("/treasury", getTreasuries);
-router.post("/treasury", createTreasury);
-router.put("/treasury", updateCurrent);
+router.post("/treasury", authMiddleware, createTreasury);
+router.put("/treasury", authMiddleware, updateCurrent);
 router.delete("/treasury", authMiddleware, deleteAllTreasuries);
 
+router.get("/admin", authMiddleware, getAdmin);
 router.post("/admincreate", createAdmin);
 router.post("/adminlogin", loginAdmin);
 

@@ -10,7 +10,7 @@ const cors_1 = __importDefault(require("cors"));
 const PORT = process.env.PORT || 3005;
 const app = (0, express_1.default)();
 const corsOptions = {
-    origin: "*",
+    origin: "https://musicashram.vercel.app",
     credentials: true,
     optionSuccessStatus: 200,
 };

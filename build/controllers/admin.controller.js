@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginAdmin = exports.createAdmin = void 0;
+exports.getAdmin = exports.loginAdmin = exports.createAdmin = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const prisma_1 = __importDefault(require("../prisma"));
@@ -44,7 +44,7 @@ async function loginAdmin(req, res) {
             if (!validatedPass)
                 throw new Error();
             const accessToken = jsonwebtoken_1.default.sign({ id: admin.id }, SECRET_KEY);
-            res.status(200).send({ accessToken });
+            res.status(200).send({ accessToken, admin: username });
         }
     }
     catch (error) {
@@ -54,3 +54,7 @@ async function loginAdmin(req, res) {
     }
 }
 exports.loginAdmin = loginAdmin;
+async function getAdmin(req, res) {
+    res.status(200).send({ admin: req.admin });
+}
+exports.getAdmin = getAdmin;

@@ -36,7 +36,7 @@ async function loginAdmin(req: Request, res: Response): Promise<void> {
       const validatedPass = await bcrypt.compare(password, admin.password);
       if (!validatedPass) throw new Error();
       const accessToken = jwt.sign({ id: admin.id }, SECRET_KEY);
-      res.status(200).send({ accessToken });
+      res.status(200).send({ accessToken, admin: username });
     }
   } catch (error) {
     res
@@ -45,4 +45,8 @@ async function loginAdmin(req: Request, res: Response): Promise<void> {
   }
 }
 
-export { createAdmin, loginAdmin };
+async function getAdmin(req: Request, res: Response): Promise<void> {
+  res.status(200).send({ admin: req.admin });
+}
+
+export { createAdmin, loginAdmin, getAdmin };
